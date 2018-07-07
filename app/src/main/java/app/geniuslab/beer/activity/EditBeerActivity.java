@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import app.geniuslab.beer.R;
 import app.geniuslab.beer.connection.MyConnection;
+import app.geniuslab.beer.dialog.LoadingDialog;
 import app.geniuslab.beer.model.Beer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ public class EditBeerActivity extends AppCompatActivity {
 
     @BindView(R.id.price_edit)
     EditText priceEdit;
-
+    LoadingDialog loadingDialog;
     MyConnection sqlite;
     SQLiteDatabase db;
     Beer beer;
@@ -33,6 +34,7 @@ public class EditBeerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         sqlite = new MyConnection(this,null,null,2);
         db = sqlite.getWritableDatabase();
+        loadingDialog = new LoadingDialog(EditBeerActivity.this, getString(R.string.app_name),getString(R.string.process_message));
 
          beer = (Beer) getIntent().getExtras().get("beer");
         Log.e("id_beer","" + beer.getId());
@@ -45,9 +47,30 @@ public class EditBeerActivity extends AppCompatActivity {
     public void actionUpdate(){
         String name = nameEdit.getText().toString();
         String price = priceEdit.getText().toString();
-        beer.setName(name);
-        beer.setPrice(price);
-        sqlite.updateBeer(beer, db);
-        finish();
+        if(validateinputs()){
+            beer.setName(name);
+            beer.setPrice(price);
+            sqlite.updateBeer(beer, db);
+            finish();
+        }
+
+    }
+
+    private boolean validateinputs(){
+        boolean isValid = true;
+        if (nameEdit.getText().toString().isEmpty()){
+            loadingDialog.showMessage("El campo Nombre no debe estar vacio");
+            isValid =  false;
+        }
+        else if (priceEdit.getText().toString().isEmpty()){
+            loadingDialog.showMessage("El campo Precio no debe estar vacio");
+            isValid = false;
+        }
+
+        if (!isValid){
+            loadingDialog.show();
+        }
+
+        return isValid;
     }
 }

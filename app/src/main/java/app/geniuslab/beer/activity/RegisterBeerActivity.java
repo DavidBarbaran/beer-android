@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import app.geniuslab.beer.R;
 import app.geniuslab.beer.connection.MyConnection;
+import app.geniuslab.beer.dialog.LoadingDialog;
 import app.geniuslab.beer.model.Beer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ public class RegisterBeerActivity extends AppCompatActivity {
 
     @BindView(R.id.price_edit)
     EditText priceEdit;
-
+    LoadingDialog loadingDialog;
     MyConnection sqlite;
     SQLiteDatabase db;
 
@@ -31,6 +32,8 @@ public class RegisterBeerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_beer);
         ButterKnife.bind(this);
         sqlite = new MyConnection(this,null,null,2);
+        loadingDialog = new LoadingDialog(RegisterBeerActivity.this, getString(R.string.app_name),getString(R.string.process_message));
+
         db = sqlite.getWritableDatabase();
     }
 
@@ -38,17 +41,16 @@ public class RegisterBeerActivity extends AppCompatActivity {
     public void actionAdd(){
         String name = nameEdit.getText().toString();
         String price = priceEdit.getText().toString();
-
-        if(validation(name)==null){
-            sqlite.insertBeer(name,
-                    price,
-                    "https://http2.mlstatic.com/D_Q_NP_761521-MPE20797619153_072016-Q.jpg",db);
-            finish();
-        }else{
-            Toast.makeText(this,"Producto ya existe",Toast.LENGTH_LONG).show();
+        if(validateinputs()){
+            if (validation(name) == null) {
+                sqlite.insertBeer(name,
+                        price,
+                        "https://http2.mlstatic.com/D_Q_NP_761521-MPE20797619153_072016-Q.jpg", db);
+                finish();
+            } else {
+                Toast.makeText(this, "Producto ya existe", Toast.LENGTH_LONG).show();
+            }
         }
-
-
     }
 
     public Beer validation(String name){
@@ -69,5 +71,23 @@ public class RegisterBeerActivity extends AppCompatActivity {
 
         }
         return bean;
+    }
+
+    private boolean validateinputs(){
+        boolean isValid = true;
+        if (nameEdit.getText().toString().isEmpty()){
+            loadingDialog.showMessage("El campo Nombre no debe estar vacio");
+            isValid =  false;
+        }
+        else if (priceEdit.getText().toString().isEmpty()){
+            loadingDialog.showMessage("El campo Precio no debe estar vacio");
+            isValid = false;
+        }
+
+        if (!isValid){
+            loadingDialog.show();
+        }
+
+        return isValid;
     }
 }
