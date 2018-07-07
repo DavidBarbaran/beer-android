@@ -42,11 +42,14 @@ import java.util.Set;
 import app.geniuslab.beer.R;
 import app.geniuslab.beer.connection.MyConnection;
 import app.geniuslab.beer.connection.RestApi;
+import app.geniuslab.beer.dialog.LoadingDialog;
 import app.geniuslab.beer.model.Beer;
 import app.geniuslab.beer.recycler.AdapterRecycler;
 import app.geniuslab.beer.session.Preference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,12 +68,15 @@ public class HomeActivity extends AppCompatActivity
 
     Context context=this;
     List<Beer> beers = new ArrayList<>();
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        loadingDialog = new LoadingDialog(HomeActivity.this, getString(R.string.app_name),getString(R.string.process_message));
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Beer!");
@@ -108,6 +114,29 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+    }
+
+    @OnClick(R.id.export_btn)
+    public void actionExport(){
+        loadingDialog.show();
+        MyConnection sqlite = new MyConnection(context,null,null,2);
+        SQLiteDatabase db = sqlite.getWritableDatabase();
+        restApi.saveBeers("drinks",sqlite.getList(db)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                loadingDialog.showMessage(getString(R.string.export_message));
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("onFailure",t.toString());
+            }
+        });
+
+
+//
+//
 
     }
 

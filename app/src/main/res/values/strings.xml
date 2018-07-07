@@ -18,6 +18,7 @@
     <string name="connection_message">No ahi conexión a internet. Asegúrese de que la conexión wi-fi o los datos móviles estén encendidos, e intente de nuevo.</string>
     <string name="connection_lost_message">La conexión a internet se ha perdido</string>
     <string name="process_message">Estamos procesando tus datos</string>
+    <string name="export_message">Datos exportados correctamente</string>
 
 
 </resources>
