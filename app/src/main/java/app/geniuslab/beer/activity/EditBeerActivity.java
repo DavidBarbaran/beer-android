@@ -40,7 +40,6 @@ public class EditBeerActivity extends AppCompatActivity {
         Log.e("id_beer","" + beer.getId());
         nameEdit.setText(beer.getName());
         priceEdit.setText(beer.getPrice());
-
     }
 
     @OnClick(R.id.add_btn)

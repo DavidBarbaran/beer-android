@@ -40,7 +40,7 @@ public class Preference {
     }
 
     public String getName() {
-        return sharedPreferences.getString(USERID, "");
+        return sharedPreferences.getString(NAME, "");
     }
 
     public int getUserId() {
