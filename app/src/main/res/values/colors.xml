@@ -9,5 +9,6 @@
 
     <color name="gray">#636363</color>
     <color name="grayOpacity50">#80636363</color>
+    <color name="red">#8A0808</color>
 
 </resources>

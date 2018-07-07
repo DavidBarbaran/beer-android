@@ -73,4 +73,29 @@ public class EditBeerActivity extends AppCompatActivity {
 
         return isValid;
     }
+
+    @OnClick(R.id.deleten_btn)
+    public void delete(){
+        String name = nameEdit.getText().toString();
+        Eliminar(name);
+        finish();
+    }
+
+
+    public String Eliminar(String name){
+        String result="";
+        try {
+            MyConnection cn=new MyConnection(this,null,null,2);
+            SQLiteDatabase db=cn.getWritableDatabase();
+
+            db.delete("beer",
+                    "name=?",
+                    new String[]{name});
+
+            result="Eliminado";
+        }catch(Exception ex){
+            result= ex.getMessage();
+        }
+        return result;
+    }
 }

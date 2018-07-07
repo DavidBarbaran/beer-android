@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import app.geniuslab.beer.R;
 import app.geniuslab.beer.activity.EditBeerActivity;
@@ -22,6 +21,8 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
 
     Context context ;
     List<Beer> beers;
+    String nombre;
+
 
     public AdapterRecycler(Context context, List<Beer> beers) {
         this.context = context;
@@ -75,4 +76,5 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
     public void setBeers(List<Beer> beers) {
         this.beers = beers;
     }
+
 }
