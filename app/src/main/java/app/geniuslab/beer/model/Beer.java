@@ -15,7 +15,12 @@ public class Beer {
 
     private String image ;
 
-    public Beer(int id, String name, String price,String image) {
+
+    public Beer(int id, String name, String image, String price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
     }
 
     public int getId() {

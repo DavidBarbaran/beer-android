@@ -3,6 +3,7 @@ package app.geniuslab.beer.recycler;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
     public AdapterRecycler(Context context, List<Beer> beers) {
         this.context = context;
         this.beers = beers;
+        Log.e("sizeBeers", beers.size() + "");
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
@@ -44,6 +46,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
     @Override
     public void onBindViewHolder(@NonNull AdapterRecycler.viewHolder holder, int position) {
         Beer beer = beers.get(holder.getAdapterPosition());
+       Log.e("beer_data",beer.getName()  + "");
         holder.nombre.setText(beer.getName());
         holder.precio.setText(beer.getPrice());
     }

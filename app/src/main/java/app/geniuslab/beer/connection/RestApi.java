@@ -11,7 +11,10 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RestApi {
@@ -33,5 +36,4 @@ public interface RestApi {
 
     @GET("drink.json?")
     Call<JsonObject> getdrink(@Query("orderBy") String order, @Query("equalTo") int userId);
-
 }

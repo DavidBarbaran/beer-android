@@ -155,6 +155,7 @@ public class HomeActivity extends AppCompatActivity
 
                   beers = new ArrayList<>();
                 for(JsonElement beer: jsonObject.get("drinks").getAsJsonArray()){
+                    Log.e("beer_data",beer.getAsJsonObject().get("name").getAsString() + "" );
                     beers.add(new Beer(beer.getAsJsonObject().get("id").getAsInt(),
                             beer.getAsJsonObject().get("name").getAsString(),
                             beer.getAsJsonObject().get("image").getAsString(),
@@ -179,9 +180,9 @@ public class HomeActivity extends AppCompatActivity
         for(Beer beer : beers){
             sqlite.insertBeer(beer.getName(),beer.getImage(),beer.getPrice(),db);
         }
-        Toast.makeText(context,"Se inserto correctamente", Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"Se inserto correctamente "  + beers.size(), Toast.LENGTH_LONG).show();
 
-        adapter = new AdapterRecycler(getApplicationContext(),beers);
+        adapter = new AdapterRecycler(this,beers);
         recyclerView.setAdapter(adapter);
 
 
