@@ -10,6 +10,7 @@ public class Preference {
     private static Preference preference;
 
     private static final String LOGIN = "login";
+    private static final String USERID = "userid";
     private static final String USERNAME = "username";
     private static final String NAME = "name";
     private static final String PROFILEPICTURE = "profilePicture";
@@ -39,22 +40,31 @@ public class Preference {
     }
 
     public String getName() {
-        return sharedPreferences.getString(NAME, "");
+        return sharedPreferences.getString(USERID, "");
+    }
+
+    public int getUserId() {
+        return sharedPreferences.getInt(USERID, -1);
     }
 
     public String getProfilePicture() {
         return sharedPreferences.getString(PROFILEPICTURE, "");
     }
 
+    public void setUserId(int userId) {
+        editor.putInt(USERID, userId).commit();
+    }
+
     public void setUsername(String login) {
         editor.putString(USERNAME, login).commit();
     }
 
-    public void setName(String login) {
-        editor.putString(NAME, login).commit();
+    public void setName(String name) {
+        editor.putString(NAME, name).commit();
     }
-    public void setProfilePicture(String login) {
-        editor.putString(PROFILEPICTURE, login).commit();
+
+    public void setProfilePicture(String profilepicture) {
+        editor.putString(PROFILEPICTURE, profilepicture).commit();
     }
 }
 

@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("keys", entries.iterator().next().getKey());
 
                     if (user.getPassword().equals(passwordEdit.getText().toString())){
+                        preference.setUserId(user.getId());
                         preference.setLogin(true);
                         preference.setName(user.getName());
                         preference.setUsername(user.getUsername());

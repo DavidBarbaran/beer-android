@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -25,12 +26,16 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import app.geniuslab.beer.R;
 import app.geniuslab.beer.connection.MyConnection;
 import app.geniuslab.beer.connection.RestApi;
 import app.geniuslab.beer.model.Beer;
 import app.geniuslab.beer.recycler.AdapterRecycler;
+import app.geniuslab.beer.session.Preference;
+import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,7 +43,11 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.profile_picture)
+    ImageView profileImage;
+
     private RestApi restApi = RestApi.RETROFIT.create(RestApi.class);
+    private Preference preference;
 
     RecyclerView recyclerView;
     AdapterRecycler adapter;
@@ -52,6 +61,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        preference = Preference.getIntance(this);
         recyclerView = findViewById(R.id.recyclerview_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -133,23 +143,30 @@ public class HomeActivity extends AppCompatActivity
     }
 
      void loadData(){
-        restApi.getdrink().enqueue(new Callback<JsonArray>() {
+        restApi.getdrink("\"userId\"",preference.getUserId()).enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                beers = new ArrayList<>();
-                for(JsonElement beer:response.body()){
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.e("response",response.body() + "");
+                Set<Map.Entry<String, JsonElement>> entries = response.body().entrySet();
+
+                JsonObject jsonObject = response.body().get(entries.iterator().next().getKey()).getAsJsonObject();
+
+
+                  beers = new ArrayList<>();
+                for(JsonElement beer: jsonObject.get("drinks").getAsJsonArray()){
                     beers.add(new Beer(beer.getAsJsonObject().get("id").getAsInt(),
                             beer.getAsJsonObject().get("name").getAsString(),
                             beer.getAsJsonObject().get("image").getAsString(),
                             beer.getAsJsonObject().get("price").getAsString()));
                 }
 
-                Toast.makeText(context,"Conexion Establecida", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"Conexion Establecida", Toast.LENGTH_LONG).show();
+
             }
 
             @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                Log.e("hola", "onFailure: "+t.getMessage() );
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
             }
         });
     }

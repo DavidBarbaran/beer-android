@@ -31,7 +31,7 @@ public interface RestApi {
     @GET("user.json?")
     Call<JsonObject> getUser(@Query("orderBy") String order, @Query("equalTo") String username);
 
-    @GET("/drink/0.json")
-    Call<JsonArray> getdrink();
+    @GET("drink.json?")
+    Call<JsonObject> getdrink(@Query("orderBy") String order, @Query("equalTo") int userId);
 
 }
