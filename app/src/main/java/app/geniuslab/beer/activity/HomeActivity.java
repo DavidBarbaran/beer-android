@@ -1,11 +1,15 @@
 package app.geniuslab.beer.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,6 +55,7 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView profileImage;
+    TextView nameText;
 
     private RestApi restApi = RestApi.RETROFIT.create(RestApi.class);
     private Preference preference;
@@ -65,16 +71,20 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Beer!");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View hView =  navigationView.getHeaderView(0);
 
         profileImage = hView.findViewById(R.id.profile_picture);
+        nameText = hView.findViewById(R.id.name_text);
         preference = Preference.getIntance(this);
+        nameText.setText(preference.getName());
+
         RequestOptions requestOptions = new RequestOptions();
         int size10 = (int)  getResources().getDimension(R.dimen.size80);
-
         requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(size10));
         Glide.with(this).asBitmap().load(preference.getProfilePicture()).apply(requestOptions).into(profileImage);
         recyclerView = findViewById(R.id.recyclerview_home);
@@ -144,7 +154,16 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             startActivity(new Intent(HomeActivity.this, RegisterBeerActivity.class));
         } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(HomeActivity.this, DecoderActivity.class));
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        401);
+            }
+            else {
+                startActivity(new Intent(HomeActivity.this, DecoderActivity.class));
+            }
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -200,5 +219,24 @@ public class HomeActivity extends AppCompatActivity
         SQLiteDatabase db = sqlite.getWritableDatabase();
         adapter.setBeers(sqlite.getList(db));
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 401: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(new Intent(HomeActivity.this, DecoderActivity.class));
+
+                } else {
+
+                }
+                return;
+            }
+
+        }
     }
 }

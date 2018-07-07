@@ -49,16 +49,7 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
     @Override
     protected void onResume() {
         super.onResume();
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
-                    401);
-        }
-        else {
-            qrCodeReaderView.startCamera();
-        }
+        qrCodeReaderView.startCamera();
     }
 
     @Override
@@ -74,25 +65,4 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
        // resultTextView.setText(text);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 401: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    qrCodeReaderView.startCamera();
-
-                } else {
-
-                 finish();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
 }
