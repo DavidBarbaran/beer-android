@@ -22,6 +22,9 @@ public class Beer {
         this.price = price;
         this.image = image;
     }
+    public Beer() {
+
+    }
 
     public int getId() {
         return 0;
