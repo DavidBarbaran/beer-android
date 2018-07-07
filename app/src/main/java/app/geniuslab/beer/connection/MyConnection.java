@@ -68,4 +68,13 @@ public class MyConnection extends SQLiteOpenHelper {
 
         return beers;
     }
+
+    public void updateBeer(Beer beer,SQLiteDatabase db){
+        ContentValues cv = new ContentValues();
+        cv.put(col_name,beer.getName()); //These Fields  be your String values of actual column nam
+        cv.put(col_price,beer.getPrice());
+        db.update(TABLE_NAME, cv, "id="+beer.getId(), null);
+
+    }
+
 }

@@ -28,7 +28,7 @@ public class Beer implements Serializable{
     }
 
     public int getId() {
-        return 0;
+        return id;
     }
 
     public void setId(int id) {
