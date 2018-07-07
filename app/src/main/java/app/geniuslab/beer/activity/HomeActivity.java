@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity
 
     RecyclerView recyclerView;
     AdapterRecycler adapter;
-    FloatingActionButton buttonfab;
+
     Context context=this;
     List<Beer> beers;
 
@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity
         preference = Preference.getIntance(this);
         recyclerView = findViewById(R.id.recyclerview_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         loadData();
 
@@ -160,7 +161,9 @@ public class HomeActivity extends AppCompatActivity
                             beer.getAsJsonObject().get("price").getAsString()));
                 }
 
-                //Toast.makeText(context,"Conexion Establecida", Toast.LENGTH_LONG).show();
+
+
+                Toast.makeText(context,"Conexion Establecida", Toast.LENGTH_LONG).show();
 
             }
 
@@ -171,14 +174,16 @@ public class HomeActivity extends AppCompatActivity
         });
     }
     void insertData(){
-        MyConnection sqlite = new MyConnection(context,null,null,1);
+        MyConnection sqlite = new MyConnection(context,null,null,2);
         SQLiteDatabase db = sqlite.getWritableDatabase();
         for(Beer beer : beers){
             sqlite.insertBeer(beer.getName(),beer.getImage(),beer.getPrice(),db);
         }
         Toast.makeText(context,"Se inserto correctamente", Toast.LENGTH_LONG).show();
 
-        adapter = new AdapterRecycler(HomeActivity.this,beers);
+        adapter = new AdapterRecycler(getApplicationContext(),beers);
         recyclerView.setAdapter(adapter);
+
+
     }
 }

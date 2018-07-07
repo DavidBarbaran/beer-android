@@ -11,7 +11,7 @@ public class MyConnection extends SQLiteOpenHelper {
     public static final String TABLE_NAME="beer";
     public static final String col_id="id";
     public static final String col_name="name";
-    public static final String col_image="name";
+    public static final String col_image="image";
     public static final String col_price="price";
 
     public MyConnection(Context context, String name , SQLiteDatabase.CursorFactory factory, int version) {
@@ -34,7 +34,7 @@ public class MyConnection extends SQLiteOpenHelper {
 
     public long insertBeer( String name, String price,String image ,SQLiteDatabase db)
     {
-        Log.i("SQLite", "INSERT: " + name + "," + price );
+        Log.i("SQLite", "INSERT: " + name + ","+image+"," + price );
         ContentValues contentValues = new ContentValues();
         contentValues.put( col_name , name);
         contentValues.put( col_image , image);

@@ -17,11 +17,11 @@ import app.geniuslab.beer.model.Beer;
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHolder> {
 
     Context context ;
-    List<Beer> listbeer;
+    List<Beer> beers;
 
-    public AdapterRecycler(Context context, List<Beer> listbeer) {
+    public AdapterRecycler(Context context, List<Beer> beers) {
         this.context = context;
-        this.listbeer = listbeer;
+        this.beers = beers;
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
@@ -43,13 +43,13 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
 
     @Override
     public void onBindViewHolder(@NonNull AdapterRecycler.viewHolder holder, int position) {
-        Beer beer = listbeer.get(holder.getAdapterPosition());
+        Beer beer = beers.get(holder.getAdapterPosition());
         holder.nombre.setText(beer.getName());
         holder.precio.setText(beer.getPrice());
     }
 
     @Override
     public int getItemCount() {
-        return listbeer.size();
+        return beers.size();
     }
 }
