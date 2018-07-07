@@ -1,18 +1,21 @@
 package app.geniuslab.beer.recycler;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 import java.util.zip.Inflater;
 
 import app.geniuslab.beer.R;
+import app.geniuslab.beer.activity.EditBeerActivity;
 import app.geniuslab.beer.model.Beer;
 
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHolder> {
@@ -28,10 +31,14 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
 
     public static class viewHolder extends RecyclerView.ViewHolder {
         TextView nombre , precio ;
+        ImageView qrImage, editImage, deleteImage;
         public viewHolder(View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.tview_nombre);
             precio = itemView.findViewById(R.id.tview_precio);
+            qrImage = itemView.findViewById(R.id.qr_image);
+            editImage = itemView.findViewById(R.id.edit_image);
+            deleteImage = itemView.findViewById(R.id.delete_image);
         }
     }
 
@@ -44,11 +51,20 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterRecycler.viewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final AdapterRecycler.viewHolder holder, int position) {
         Beer beer = beers.get(holder.getAdapterPosition());
        Log.e("beer_data",beer.getName()  + "");
         holder.nombre.setText(beer.getName());
         holder.precio.setText(beer.getPrice());
+        holder.editImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditBeerActivity.class);
+                intent.putExtra("beer", beers.get(holder.getAdapterPosition()));
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override

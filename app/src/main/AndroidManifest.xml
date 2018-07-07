@@ -23,7 +23,8 @@
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.RegisterBeerActivity"></activity>
+        <activity android:name=".activity.RegisterBeerActivity" />
+        <activity android:name=".activity.EditBeerActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package app.geniuslab.beer.model;
+import java.io.Serializable;
 
-public class Beer {
+public class Beer implements Serializable{
     private int id ;
     private String name;
     private String price;
