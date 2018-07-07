@@ -146,33 +146,24 @@ public class HomeActivity extends AppCompatActivity
     }
 
      void loadData(){
-        restApi.getdrink("\"userId\"",preference.getUserId()).enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.e("response",response.body() + "");
-                Set<Map.Entry<String, JsonElement>> entries = response.body().entrySet();
+       restApi.getdrink().enqueue(new Callback<JsonArray>() {
+           @Override
+           public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+              beers = new ArrayList<>();
+               for (JsonElement beer:response.body()){
+                   beers.add(new Beer(beer.getAsJsonObject().get("id").getAsInt(),
+                           beer.getAsJsonObject().get("name").getAsString(),
+                           beer.getAsJsonObject().get("image").getAsString(),
+                           beer.getAsJsonObject().get("price").getAsString()));
+               }
+               Toast.makeText(context,"El servicio esta iniciado correctamente "  + beers.size(), Toast.LENGTH_LONG).show();
+           }
 
-                JsonObject jsonObject = response.body().get(entries.iterator().next().getKey()).getAsJsonObject();
+           @Override
+           public void onFailure(Call<JsonArray> call, Throwable t) {
 
-                for(JsonElement beer: jsonObject.get("drinks").getAsJsonArray()){
-                    Log.e("beer_data",beer.getAsJsonObject().get("name").getAsString() + "" );
-                    beers.add(new Beer(beer.getAsJsonObject().get("id").getAsInt(),
-                            beer.getAsJsonObject().get("name").getAsString(),
-                            beer.getAsJsonObject().get("image").getAsString(),
-                            beer.getAsJsonObject().get("price").getAsString()));
-                }
-
-
-
-                Toast.makeText(context,"Conexion Establecida", Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
-            }
-        });
+           }
+       });
     }
     void insertData(){
         MyConnection sqlite = new MyConnection(context,null,null,2);
