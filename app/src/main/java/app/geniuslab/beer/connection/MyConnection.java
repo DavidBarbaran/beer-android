@@ -2,9 +2,15 @@ package app.geniuslab.beer.connection;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import app.geniuslab.beer.model.Beer;
 
 public class MyConnection extends SQLiteOpenHelper {
     public static final String DATA_BASE="beer.db";
@@ -41,5 +47,25 @@ public class MyConnection extends SQLiteOpenHelper {
         contentValues.put( col_price , price);
 
         return db.insert( TABLE_NAME , null, contentValues );
+    }
+    public List<Beer> getList(SQLiteDatabase db){
+        List<Beer> beers = new ArrayList<>();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_NAME,null);
+
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                Beer beer = new Beer(
+                        cursor.getInt(cursor.getColumnIndex(col_id)),
+                        cursor.getString(cursor.getColumnIndex(col_name)),
+                        cursor.getString(cursor.getColumnIndex(col_image)),
+                        cursor.getString(cursor.getColumnIndex(col_price))
+                );
+
+                beers.add(beer);
+                cursor.moveToNext();
+            }
+        }
+
+        return beers;
     }
 }

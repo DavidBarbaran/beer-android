@@ -23,7 +23,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
     public AdapterRecycler(Context context, List<Beer> beers) {
         this.context = context;
         this.beers = beers;
-        Log.e("sizeBeers", beers.size() + "");
+       // Log.e("sizeBeers", beers.size() + "");
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
@@ -53,6 +53,10 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
 
     @Override
     public int getItemCount() {
-        return beers.size();
+        return beers == null ? 0 : beers.size();
+    }
+
+    public void setBeers(List<Beer> beers) {
+        this.beers = beers;
     }
 }

@@ -1,6 +1,7 @@
 package app.geniuslab.beer.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -53,7 +54,7 @@ public class HomeActivity extends AppCompatActivity
     AdapterRecycler adapter;
 
     Context context=this;
-    List<Beer> beers;
+    List<Beer> beers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,8 @@ public class HomeActivity extends AppCompatActivity
         preference = Preference.getIntance(this);
         recyclerView = findViewById(R.id.recyclerview_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        adapter = new AdapterRecycler(this,null);
+        recyclerView.setAdapter(adapter);
 
         loadData();
 
@@ -127,7 +129,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            startActivity(new Intent(HomeActivity.this, RegisterBeerActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -152,8 +154,6 @@ public class HomeActivity extends AppCompatActivity
 
                 JsonObject jsonObject = response.body().get(entries.iterator().next().getKey()).getAsJsonObject();
 
-
-                  beers = new ArrayList<>();
                 for(JsonElement beer: jsonObject.get("drinks").getAsJsonArray()){
                     Log.e("beer_data",beer.getAsJsonObject().get("name").getAsString() + "" );
                     beers.add(new Beer(beer.getAsJsonObject().get("id").getAsInt(),
@@ -178,13 +178,23 @@ public class HomeActivity extends AppCompatActivity
         MyConnection sqlite = new MyConnection(context,null,null,2);
         SQLiteDatabase db = sqlite.getWritableDatabase();
         for(Beer beer : beers){
-            sqlite.insertBeer(beer.getName(),beer.getImage(),beer.getPrice(),db);
+            sqlite.insertBeer(beer.getName(),beer.getPrice(),beer.getImage(),db);
         }
         Toast.makeText(context,"Se inserto correctamente "  + beers.size(), Toast.LENGTH_LONG).show();
-
-        adapter = new AdapterRecycler(this,beers);
-        recyclerView.setAdapter(adapter);
+        updateData();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateData();
+    }
+    private void updateData(){
+        MyConnection sqlite = new MyConnection(context,null,null,2);
+        SQLiteDatabase db = sqlite.getWritableDatabase();
+        adapter.setBeers(sqlite.getList(db));
+        adapter.notifyDataSetChanged();
     }
 }

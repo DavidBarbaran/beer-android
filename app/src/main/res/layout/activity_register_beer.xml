@@ -37,30 +37,32 @@
         </LinearLayout>
 
         <EditText
+            android:id="@+id/name_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/grayOpacity50"
             android:hint="Nombre"
+            android:inputType="text"
+            android:layout_marginLeft="@dimen/spacing16"
+            android:layout_marginRight="@dimen/spacing16"
             android:fontFamily="@font/poppins_light" />
 
         <EditText
+            android:id="@+id/price_edit"
             android:layout_width="match_parent"
+            android:inputType="numberDecimal"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing16"
+            android:layout_marginRight="@dimen/spacing16"
             android:textColorHint="@color/grayOpacity50"
-            android:hint="Nombre"
-            android:fontFamily="@font/poppins_light" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/grayOpacity50"
-            android:hint="Nombre"
+            android:hint="Precio"
             android:fontFamily="@font/poppins_light" />
 
 
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
