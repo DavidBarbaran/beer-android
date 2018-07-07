@@ -21,6 +21,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -37,6 +41,7 @@ import app.geniuslab.beer.model.Beer;
 import app.geniuslab.beer.recycler.AdapterRecycler;
 import app.geniuslab.beer.session.Preference;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +49,6 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.profile_picture)
     ImageView profileImage;
 
     private RestApi restApi = RestApi.RETROFIT.create(RestApi.class);
@@ -62,7 +66,17 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+
+        profileImage = hView.findViewById(R.id.profile_picture);
         preference = Preference.getIntance(this);
+        RequestOptions requestOptions = new RequestOptions();
+        int size10 = (int)  getResources().getDimension(R.dimen.size80);
+
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(size10));
+        Glide.with(this).asBitmap().load(preference.getProfilePicture()).apply(requestOptions).into(profileImage);
         recyclerView = findViewById(R.id.recyclerview_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterRecycler(this,null);
@@ -84,8 +98,7 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -131,7 +144,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             startActivity(new Intent(HomeActivity.this, RegisterBeerActivity.class));
         } else if (id == R.id.nav_slideshow) {
-
+            startActivity(new Intent(HomeActivity.this, DecoderActivity.class));
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
