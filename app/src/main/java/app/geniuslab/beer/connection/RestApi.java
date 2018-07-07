@@ -1,5 +1,6 @@
 package app.geniuslab.beer.connection;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -29,5 +30,8 @@ public interface RestApi {
 
     @GET("user.json?")
     Call<JsonObject> getUser(@Query("orderBy") String order, @Query("equalTo") String username);
+
+    @GET("/drink/0.json")
+    Call<JsonArray> getdrink();
 
 }
