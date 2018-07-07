@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/spacing32">
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing20"
+        android:layout_marginRight="@dimen/spacing20"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="¿DEJAR ESCAPAR?"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/text18" />
+
+    <TextView
+        android:id="@+id/message_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing20"
+        android:layout_marginLeft="@dimen/spacing20"
+        android:layout_marginRight="@dimen/spacing20"
+        android:layout_marginTop="@dimen/spacing8"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="Estas seguro que quieres eliminar este tablero"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/text16" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/spacing20"
+
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple" />
+
+    <LinearLayout
+        android:id="@+id/accept_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size1"
+            android:layout_marginLeft="@dimen/spacing8"
+            android:layout_marginRight="@dimen/spacing8"
+            android:background="@color/grayOpacity50" />
+
+        <Button
+            android:id="@+id/accept_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/accept"
+            android:textColor="@color/gray" />
+
+    </LinearLayout>
+
+</LinearLayout>
