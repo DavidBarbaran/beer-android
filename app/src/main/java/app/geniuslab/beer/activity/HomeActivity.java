@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,6 +39,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -257,6 +260,13 @@ public class HomeActivity extends AppCompatActivity
        });
     }
     void insertData(){
+        Set set = new HashSet(Arrays.asList(beers));
+        Set set2 = new HashSet(Arrays.asList(listado()));
+
+        if(set.containsAll(set2)){
+
+        }
+
         MyConnection sqlite = new MyConnection(context,null,null,2);
         SQLiteDatabase db = sqlite.getWritableDatabase();
         for(Beer beer : beers){
@@ -297,5 +307,32 @@ public class HomeActivity extends AppCompatActivity
             }
 
         }
+    }
+
+    public ArrayList<Beer> listado() {
+        ArrayList<Beer> products = new ArrayList<Beer>();
+
+        try {
+            MyConnection cn = new MyConnection(context, null, null, 2);
+            SQLiteDatabase db = cn.getReadableDatabase();
+
+            // Cursor es como un ResultSet
+            Cursor cur = db.rawQuery("select * from product", null);
+            Beer bean;
+            while (cur.moveToNext()) {
+                bean = new Beer();
+                bean.setId(cur.getInt(0));
+                bean.setName(cur.getString(1));
+                bean.setImage(cur.getString(2));
+                bean.setPrice(cur.getString(3));
+
+                products.add(bean);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return products;
     }
 }

@@ -37,6 +37,11 @@ public class RegisterBeerActivity extends AppCompatActivity {
         db = sqlite.getWritableDatabase();
     }
 
+    @OnClick(R.id.back_button)
+    public void actionBack() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.add_btn)
     public void actionAdd(){
         String name = nameEdit.getText().toString();

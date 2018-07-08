@@ -54,6 +54,11 @@ public class EditBeerActivity extends AppCompatActivity {
         }
 
     }
+    @OnClick(R.id.back_button)
+    public void actionBack() {
+        onBackPressed();
+    }
+
 
     private boolean validateinputs(){
         boolean isValid = true;

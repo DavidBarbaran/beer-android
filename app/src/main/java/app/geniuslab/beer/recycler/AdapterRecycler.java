@@ -43,7 +43,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
             precio = itemView.findViewById(R.id.tview_precio);
             qrImage = itemView.findViewById(R.id.qr_image);
             editImage = itemView.findViewById(R.id.edit_image);
-            deleteImage = itemView.findViewById(R.id.delete_image);
+
         }
     }
 
