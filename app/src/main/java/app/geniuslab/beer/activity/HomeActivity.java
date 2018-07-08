@@ -270,7 +270,9 @@ public class HomeActivity extends AppCompatActivity
         MyConnection sqlite = new MyConnection(context,null,null,2);
         SQLiteDatabase db = sqlite.getWritableDatabase();
         for(Beer beer : beers){
-            sqlite.insertBeer(beer.getName(),beer.getPrice(),beer.getImage(),db);
+            if (!validation(db,beer.getId())){
+                sqlite.insertBeer(beer.getName(),beer.getPrice(),beer.getImage(),db);
+            }
         }
         Toast.makeText(context,"Se inserto correctamente "  + beers.size(), Toast.LENGTH_LONG).show();
         updateData();
@@ -279,6 +281,16 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
+    public boolean validation(SQLiteDatabase db, int id){
+            String Query = "Select * from " + "beer" + " where " + "id" + " = " + id;
+            Cursor cursor = db.rawQuery(Query, null);
+            if(cursor.getCount() <= 0){
+                cursor.close();
+                return false;
+            }
+            cursor.close();
+            return true;
+    }
 
     @Override
     protected void onResume() {
