@@ -1,6 +1,7 @@
 package app.geniuslab.beer.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -60,6 +61,9 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
+        Intent intent = new Intent(this, QRActivity.class);
+        intent.putExtra("beer",text);
+        startActivity(intent);
         Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
 
        // resultTextView.setText(text);

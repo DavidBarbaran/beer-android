@@ -17,7 +17,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import app.geniuslab.beer.R;
+import app.geniuslab.beer.activity.DetailBeerActivity;
 import app.geniuslab.beer.activity.EditBeerActivity;
+import app.geniuslab.beer.activity.QRActivity;
 import app.geniuslab.beer.connection.MyConnection;
 import app.geniuslab.beer.model.Beer;
 
@@ -43,7 +45,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
             precio = itemView.findViewById(R.id.tview_precio);
             qrImage = itemView.findViewById(R.id.qr_image);
             editImage = itemView.findViewById(R.id.edit_image);
-
+            deleteImage = itemView.findViewById(R.id.delete_image);
         }
     }
 
@@ -78,6 +80,14 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
             @Override
             public void onClick(View v) {
                 onClickBeer.onDelete( beers.get(holder.getAdapterPosition()));
+            }
+        });
+        holder.qrImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, QRActivity.class);
+                intent.putExtra("beer", beers.get(holder.getAdapterPosition()));
+                context.startActivity(intent);
             }
         });
 
