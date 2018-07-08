@@ -1,7 +1,10 @@
 package app.geniuslab.beer.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -96,6 +99,12 @@ public class HomeActivity extends AppCompatActivity
         recyclerView = findViewById(R.id.recyclerview_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new AdapterRecycler(this,null);
+        adapter.setOnClickBeer(new AdapterRecycler.OnClickBeer() {
+            @Override
+            public void onDelete(Beer beer) {
+                deleteBeer(beer);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         loadData();
@@ -117,6 +126,32 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    private void deleteBeer(final Beer beer){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Desea eliminar la bebida?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MyConnection cn=new MyConnection(context,null,null,2);
+                SQLiteDatabase db=cn.getWritableDatabase();
+
+                db.delete("beer",
+                        "id=?",
+                        new String[]{String.valueOf(beer.getId())});
+                updateData();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+    }
+
     @OnClick(R.id.export_btn)
     public void actionExport(){
         loadingDialog.show();
@@ -133,11 +168,6 @@ public class HomeActivity extends AppCompatActivity
                 Log.e("onFailure",t.toString());
             }
         });
-
-
-//
-//
-
     }
 
     @Override

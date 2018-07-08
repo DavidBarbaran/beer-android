@@ -1,7 +1,10 @@
 package app.geniuslab.beer.recycler;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +18,7 @@ import java.util.List;
 
 import app.geniuslab.beer.R;
 import app.geniuslab.beer.activity.EditBeerActivity;
+import app.geniuslab.beer.connection.MyConnection;
 import app.geniuslab.beer.model.Beer;
 
 public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHolder> {
@@ -22,7 +26,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
     Context context ;
     List<Beer> beers;
     String nombre;
-
+    OnClickBeer onClickBeer;
 
     public AdapterRecycler(Context context, List<Beer> beers) {
         this.context = context;
@@ -41,6 +45,11 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
             editImage = itemView.findViewById(R.id.edit_image);
             deleteImage = itemView.findViewById(R.id.delete_image);
         }
+    }
+
+
+    public void setOnClickBeer(OnClickBeer onClickBeer) {
+        this.onClickBeer = onClickBeer;
     }
 
     @NonNull
@@ -65,6 +74,12 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
                 context.startActivity(intent);
             }
         });
+        holder.deleteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickBeer.onDelete( beers.get(holder.getAdapterPosition()));
+            }
+        });
 
     }
 
@@ -77,4 +92,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.viewHo
         this.beers = beers;
     }
 
+    public interface OnClickBeer{
+        void onDelete(Beer beer);
+    }
 }
