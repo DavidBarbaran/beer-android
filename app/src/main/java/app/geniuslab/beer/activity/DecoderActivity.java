@@ -61,7 +61,8 @@ public class DecoderActivity extends AppCompatActivity implements QRCodeReaderVi
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
-        Intent intent = new Intent(this, QRActivity.class);
+        finish();
+        Intent intent = new Intent(this, DetailBeerActivity.class);
         intent.putExtra("beer",text);
         startActivity(intent);
         Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
